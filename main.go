@@ -8,10 +8,10 @@ import (
 	"strings"
 )
 
-func isOpenSource(source string)  bool {
-	openWords := []string{"open source","open-source","open code","opensource"}
-	for _, words := range openWords{
-		if !strings.Contains(source, words){
+func isOpenSource(source string) bool {
+	openWords := []string{"open source", "open-source", "open code", "opensource"}
+	for _, words := range openWords {
+		if !strings.Contains(source, words) {
 			continue
 		}
 		return true
@@ -19,12 +19,12 @@ func isOpenSource(source string)  bool {
 	return false
 }
 
-func findInGitHub(motcles string,maxPage int) []string {
+func findInGitHub(motcles string, maxPage int) []string {
 	var liens []string
 	if maxPage < 1 {
-		maxPage=1
+		maxPage = 1
 	}
-	motcles = strings.ReplaceAll(motcles," ", "+")
+	motcles = strings.ReplaceAll(motcles, " ", "+")
 
 	for currentPage := 1; currentPage <= maxPage; currentPage++ {
 		sourceLink := fmt.Sprintf("https://github.com/search?p=%d&q=%s+open+source&type=Repositories", currentPage, motcles)
@@ -41,7 +41,6 @@ func findInGitHub(motcles string,maxPage int) []string {
 			return liens
 		}
 
-
 		doc, err := goquery.NewDocumentFromReader(res.Body)
 
 		if err != nil {
@@ -54,7 +53,6 @@ func findInGitHub(motcles string,maxPage int) []string {
 			lien, _ := selection.Find("a").Attr("href")
 			if lien != "" {
 				lien = "https://github.com" + lien
-
 
 				// we go to the url and found if README.md Content the words open-source or similar words
 				res, err := http.Get(lien)
@@ -76,8 +74,8 @@ func findInGitHub(motcles string,maxPage int) []string {
 
 				readmeContent := doc.Find(".Box-body").Text()
 
-				if isOpenSource(readmeContent){
-					fmt.Printf("\t Open source project found. Link : %v \n",lien)
+				if isOpenSource(readmeContent) {
+					fmt.Printf("\t Open source project found. Link : %v \n", lien)
 					liens = append(liens, lien)
 				}
 
@@ -94,9 +92,8 @@ func main() {
 
 	fmt.Printf("Finding Open source Project in Github with keywords : %v \n", words)
 
-	listeLiens := findInGitHub(words, 10)
+	listeLiens := findInGitHub(words, nbPages)
 
 	fmt.Printf("\n %d Open(s) source(s) Project(s) found in %d search pages Github with keywords : %v \n", len(listeLiens), nbPages, words)
-
 
 }
