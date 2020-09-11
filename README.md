@@ -1,2 +1,5 @@
-# scropen
-An scrapper for open source project on Github
+# Scropen
+
+OPEN SOURCE Cli scrapper program in Golang.
+
+A scrapper for open source  projects on GITHUB.
