@@ -3,16 +3,12 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 )
 
 func main() {
 
-	file, err := ioutil.ReadFile("title.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
+	file, _ := ioutil.ReadFile("tile.txt")
 	title := string(file)
 	fmt.Println(title)
 
@@ -26,6 +22,9 @@ func main() {
 
 	fmt.Print("`\n In how much pages do you want to make search ? (leave blank for one) : ")
 	fmt.Scanf("%d", &nbPages)
+	if nbPages < 1 {
+		nbPages = 1
+	}
 
 	fmt.Printf(" \t Finding Open source Project in Github with keywords : %v \n", searchword)
 
